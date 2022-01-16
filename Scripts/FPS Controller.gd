@@ -1,90 +1,73 @@
 extends KinematicBody
 
-#tutorial said this code is outdated, use this instead: https://github.com/GarbajYT/godot_updated_fps_controller/blob/main/FPS_controller_3.3/FPS.gd
+var speed = 7
+const ACCEL_DEFAULT = 7
+const ACCEL_AIR = 1
+onready var accel = ACCEL_DEFAULT
+var gravity = 9.8
+var jump = 5
 
-var mouse_sensitivity = 0.03
-
-var speed = 10
-#vertical acceleration
-var h_acceleration = 6
-var air_acceleration = 1
-var normal_acceleration = 6
-var gravity = 20
-var jump_force = 10
-var full_contact = false
+var cam_accel = 40
+var mouse_sense = 0.1
+var snap
 
 var direction = Vector3()
-var h_velocity = Vector3()
+var velocity = Vector3()
+var gravity_vec = Vector3()
 var movement = Vector3()
-var gravity_vector = Vector3()
 
 onready var head = $Head
-onready var ground_check = $Ground_Check
+onready var camera = $Head/Camera
 
 func _ready():
-	#locks the cursor to the center of the screen
+	#hides the cursor
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-#triggers whenever an input is done and an objbect consumes it
-#Docs says _unhandled_input() might be better since GUI gets to see it first
-#I think we do this to pureley capture mouse movement...like Input.GetMouseAxis in unity
 func _input(event):
+	#get mouse input for camera rotation
 	if event is InputEventMouseMotion:
-		#turns horizontal mouse movement to horizontal character rotation
-		rotate_y(deg2rad(-event.relative.x * mouse_sensitivity))
-		#turns vertically based on mouse movement
-		head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
-		#clams vertical rotation -89 and 89
+		rotate_y(deg2rad(-event.relative.x * mouse_sense))
+		head.rotate_x(deg2rad(-event.relative.y * mouse_sense))
 		head.rotation.x = clamp(head.rotation.x, deg2rad(-89), deg2rad(89))
 
+func _process(delta):
+	#camera physics interpolation to reduce physics jitter on high refresh-rate monitors
+	if Engine.get_frames_per_second() > Engine.iterations_per_second:
+		#set at top level tells engine whether this node should follow parent or not
+		camera.set_as_toplevel(true)
+		#interpolates the camera origin to head origin by the camera acceleration amount
+		camera.global_transform.origin = camera.global_transform.origin.linear_interpolate(head.global_transform.origin, cam_accel * delta)
+		camera.rotation.y = rotation.y
+		camera.rotation.x = head.rotation.x
+	else:
+		camera.set_as_toplevel(false)
+		camera.global_transform = head.global_transform
+		
 func _physics_process(delta):
-	direction = Vector3()
+	#get keyboard input
+	direction = Vector3.ZERO
+	var h_rot = global_transform.basis.get_euler().y
+	var f_input = Input.get_action_strength("move_backward") - Input.get_action_strength("move_forward")
+	var h_input = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	direction = Vector3(h_input, 0, f_input).rotated(Vector3.UP, h_rot).normalized()
 	
-	if ground_check.is_colliding():
-		full_contact = true
+	#jumping and gravity
+	if is_on_floor():
+		snap = -get_floor_normal()
+		accel = ACCEL_DEFAULT
+		gravity_vec = Vector3.ZERO
 	else:
-		full_contact = false
+		snap = Vector3.DOWN
+		accel = ACCEL_AIR
+		gravity_vec += Vector3.DOWN * gravity * delta
+		
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		snap = Vector3.ZERO
+		gravity_vec = Vector3.UP * jump
 	
-	if !is_on_floor():
-		gravity_vector += Vector3.DOWN * gravity * delta
-		#ensures acceleration is conserved during jumping
-		h_acceleration = air_acceleration
-		#raycasts only detect what's at the tip of it
-		#so if the player is on the floor but the raycast has detected something, the player falls
-		#if the raycast detects nothing but they player is on the floor it collides
-	elif is_on_floor() and full_contact:
-		#ensures that player sticks to floor when they're down
-		#ensures gravity is perpendicular to the floor, for slopes//solves issues with godot character controllers
-		gravity_vector = -get_floor_normal() * gravity
-		h_acceleration = normal_acceleration
-	else:
-		#resets the gravity if the raycast is no longer colliding
-		#stops the player form slamming in to the ground
-		gravity_vector = -get_floor_normal()
-		h_acceleration = normal_acceleration
+	#make it move
+	velocity = velocity.linear_interpolate(direction * speed, accel * delta)
+	movement = velocity + gravity_vec
 	
-	if Input.is_action_just_pressed("jump") and (is_on_floor() or ground_check.is_colliding()):
-		gravity_vector = Vector3.UP * jump_force
-	
-	if Input.is_action_pressed("move_forward"):
-		#it just adds 1 in the axis we deicde
-		direction -= transform.basis.z
-	elif Input.is_action_pressed("move_backward"):
-		direction += transform.basis.z
-	elif Input.is_action_pressed("move_left"):
-		direction += transform.basis.x
-	elif Input.is_action_pressed("move_right"):
-		direction -= transform.basis.x
-	
-	#prevents accelerated movement while moving diagonally
-	direction = direction.normalized()
-	#set h_velocity to be the speed of the player by the rate of acceleration times fps
-	#this smoothing is optional, if I was to remove it, replace movement with direction * speed in move_and_slide
-	h_velocity = h_velocity.linear_interpolate(direction * speed, h_acceleration * delta)
-	movement.z = h_velocity.z + gravity_vector.z
-	movement.x = h_velocity.x + gravity_vector.x
-	movement.y = gravity_vector.y
-	
-	move_and_slide(movement, Vector3.UP)
-	
-	
+	#the snap keeps the body attatched to slopes unless set to Vector3.ZERO
+	move_and_slide_with_snap(movement, snap, Vector3.UP)

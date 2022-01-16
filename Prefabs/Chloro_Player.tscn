@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scripts/FPS Controller.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Chloro_Player.gd" type="Script" id=1]
 
 [sub_resource type="CapsuleMesh" id=1]
 mid_height = 3.0
@@ -10,26 +10,24 @@ height = 3.0
 
 [sub_resource type="CylinderShape" id=3]
 
-[node name="FPS_Player" type="KinematicBody"]
+[node name="Chloro_Player" type="KinematicBody"]
 script = ExtResource( 1 )
+mouse_sensitivity = 0.5
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
+[node name="Body" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 shape = SubResource( 2 )
 
-[node name="Foot" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.57006, 0 )
+[node name="Feet" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.53001, 0 )
 shape = SubResource( 3 )
-__meta__ = {
-"_editor_description_": "Using a cylinder for the foot collision removes the opportunity for falling off ledges"
-}
 
 [node name="Head" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.03599, -0.0374314 )
 
 [node name="Camera" type="Camera" parent="Head"]
