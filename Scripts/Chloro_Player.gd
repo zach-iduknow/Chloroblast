@@ -26,12 +26,11 @@ var snap
 var grappling = false
 var hookpoint = Vector3()
 var hookpoint_get = false
-var hook_dist = Vector2()
-var point_dist = Vector2()
 
 #player components
 onready var head = $Head
 onready var camera = $Head/Camera
+onready var body = $Body
 onready var grapple_cast = $Head/Camera/GrappleCast
 
 func _ready():
@@ -57,6 +56,7 @@ func _physics_process(delta):
 	
 	if is_on_floor():
 		#makes center of gravity perpendicular to the floor's facing direction
+		#this line screws up grapple, need a way to turn it off
 		snap = -get_floor_normal()
 		#reseting the acceleration gained from falling
 		gravity_vector = Vector3.ZERO
@@ -82,7 +82,6 @@ func _physics_process(delta):
 
 func grapple():
 	#getting global transform as vector2 to stop sticking
-	point_dist = Vector2(transform.origin.x, transform.origin.z)
 	#checks to see if player pushed grapple and sets grappling true
 	if Input.is_action_just_pressed("grapple"):
 		if grapple_cast.is_colliding():
@@ -95,14 +94,15 @@ func grapple():
 		if not hookpoint_get:
 			hookpoint = grapple_cast.get_collision_point()
 			hookpoint_get = true
-			hook_dist = Vector2(hookpoint.x,hookpoint.z)
+			print(gravity_vector)
+	
 		#sees if the grapple point is at least 1 unit away from player
-		
-		if hook_dist.distance_to(point_dist) > 1.5:
+
+		if hookpoint.distance_to(transform.origin) > 4:
 			if hookpoint_get:
-				#transform.origin = lerp(transform.origin, hookpoint, grapple_speed)
-				print(hook_dist.distance_to(point_dist))
+				snap = Vector3.ZERO
 				transform.origin = lerp(transform.origin,hookpoint,grapple_speed)
 		else:
+			snap = Vector3.DOWN
 			grappling = false
 			hookpoint_get = false
