@@ -57,7 +57,8 @@ func _physics_process(delta):
 	if is_on_floor():
 		#makes center of gravity perpendicular to the floor's facing direction
 		#this line screws up grapple, need a way to turn it off
-		snap = -get_floor_normal()
+		if not grappling:
+			snap = -get_floor_normal()
 		#reseting the acceleration gained from falling
 		gravity_vector = Vector3.ZERO
 		acceleration = default_acceleration
