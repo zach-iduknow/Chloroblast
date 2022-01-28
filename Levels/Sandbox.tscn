@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Materials/Dark Wall.tres" type="Material" id=1]
 [ext_resource path="res://Materials/Green Wall.tres" type="Material" id=2]
-[ext_resource path="res://Prefabs/Chloro_Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Prefabs/Player/Chloro_Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Materials/Red Grapple.tres" type="Material" id=4]
 
 [node name="Sanbox" type="Spatial"]

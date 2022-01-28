@@ -32,6 +32,7 @@ onready var head = $Head
 onready var camera = $Head/Camera
 onready var body = $Body
 onready var grapple_cast = $Head/Camera/GrappleCast
+onready var flower_canon = $Head/FlowerCannon/Position3D
 
 func _ready():
 	#locks mouse to center of the screen
@@ -43,6 +44,10 @@ func _input(event):
 		head.rotate_x(deg2rad(-event.relative.y * mouse_sensitivity))
 		head.rotation.x = clamp(head.rotation.x, deg2rad(-89.0), deg2rad(89.0))
 
+func _process(delta):
+	if Input.is_action_just_pressed("test_quit"):
+		get_tree().quit()
+	
 func _physics_process(delta):
 	grapple()
 	#resetting the direction vector every frame
@@ -99,7 +104,7 @@ func grapple():
 	
 		#sees if the grapple point is at least 1 unit away from player
 
-		if hookpoint.distance_to(transform.origin) > 4:
+		if hookpoint.distance_to(transform.origin) > 1.5:
 			if hookpoint_get:
 				snap = Vector3.ZERO
 				transform.origin = lerp(transform.origin,hookpoint,grapple_speed)
@@ -107,3 +112,6 @@ func grapple():
 			snap = Vector3.DOWN
 			grappling = false
 			hookpoint_get = false
+
+func shoot_projectile():
+	pass
