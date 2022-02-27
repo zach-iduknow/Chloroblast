@@ -23,6 +23,7 @@ export var air_acceleration = 1
 onready var acceleration = default_acceleration
 #used for standing on slopes
 var snap
+#used for grappling
 var grappling = false
 var hookpoint = Vector3()
 var hookpoint_get = false
@@ -32,7 +33,7 @@ onready var head = $Head
 onready var camera = $Head/Camera
 onready var body = $Body
 onready var grapple_cast = $Head/Camera/GrappleCast
-onready var flower_canon = $Head/FlowerCannon/Position3D
+
 
 func _ready():
 	#locks mouse to center of the screen
@@ -49,7 +50,7 @@ func _process(delta):
 		get_tree().quit()
 	
 func _physics_process(delta):
-	grapple()
+	#grapple()
 	#resetting the direction vector every frame
 	direction = Vector3.ZERO
 	#gets whatever current y rotation we have from the basis matrix
@@ -62,8 +63,11 @@ func _physics_process(delta):
 	if is_on_floor():
 		#makes center of gravity perpendicular to the floor's facing direction
 		#this line screws up grapple, need a way to turn it off
-		if not grappling:
-			snap = -get_floor_normal()
+#		I'm removing this since I'm removing vertical grappling
+#		if not grappling:
+#			snap = -get_floor_normal()
+		
+		snap = -get_floor_normal()
 		#reseting the acceleration gained from falling
 		gravity_vector = Vector3.ZERO
 		acceleration = default_acceleration
@@ -86,7 +90,8 @@ func _physics_process(delta):
 	
 	move_and_slide_with_snap(movement,snap,Vector3.UP)
 
-func grapple():
+#this is used for vertical environment grappling
+func old_grapple():
 	#getting global transform as vector2 to stop sticking
 	#checks to see if player pushed grapple and sets grappling true
 	if Input.is_action_just_pressed("grapple"):
@@ -113,5 +118,6 @@ func grapple():
 			grappling = false
 			hookpoint_get = false
 
-func shoot_projectile():
+func grapple():
 	pass
+
