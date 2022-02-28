@@ -48,7 +48,7 @@ func _input(event):
 func _process(delta):
 	if Input.is_action_just_pressed("test_quit"):
 		get_tree().quit()
-	
+
 func _physics_process(delta):
 	#grapple()
 	#resetting the direction vector every frame

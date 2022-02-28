@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Chloro_Player.gd" type="Script" id=1]
+[ext_resource path="res://Prefabs/Weapons/pistol.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/WeaponManager.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleMesh" id=1]
 mid_height = 3.0
@@ -27,6 +29,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.03599, -0.0374314 )
 [node name="Camera" type="Camera" parent="Head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.331754, -0.193027 )
 cull_mask = 1048571
+fov = 81.2
 
 [node name="GrappleCast" type="RayCast" parent="Head/Camera"]
 enabled = true
@@ -58,3 +61,14 @@ color = Color( 0.956863, 0.105882, 0.105882, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="WeaponTransform" type="Position3D" parent="Head/Camera"]
+transform = Transform( 0.991844, 0.0094631, 0.127104, 0.0045971, 0.993935, -0.109873, -0.127373, 0.109561, 0.985785, 0.935, -0.706, -0.491 )
+script = ExtResource( 3 )
+
+[node name="WeaponParent" type="Spatial" parent="Head/Camera/WeaponTransform"]
+__meta__ = {
+"_editor_description_": "Might not need, this is just to have the weapon be more separated from the transform."
+}
+
+[node name="pistol" parent="Head/Camera/WeaponTransform/WeaponParent" instance=ExtResource( 2 )]
