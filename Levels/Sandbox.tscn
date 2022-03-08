@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Materials/Dark Wall.tres" type="Material" id=1]
 [ext_resource path="res://Materials/Green Wall.tres" type="Material" id=2]
 [ext_resource path="res://Prefabs/Player/Chloro_Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Prefabs/Enemies/dummy.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Prefabs/Player/seed.tscn" type="PackedScene" id=5]
 
 [node name="Sanbox" type="Spatial"]
 
@@ -36,10 +37,9 @@ material = ExtResource( 2 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 6 )
 speed = 14.0
 gravity = 12.0
-jump_force = 5.0
-grapple_speed = 0.05
-default_acceleration = 7
-air_acceleration = 1
 
 [node name="dummy" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, -3 )
+
+[node name="seed" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.96243, 5.66852, 8.19513 )

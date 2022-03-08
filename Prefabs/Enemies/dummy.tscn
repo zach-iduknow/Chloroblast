@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Models/Twillio.material" type="Material" id=1]
+[ext_resource path="res://Scripts/Enemies/Dummy.gd" type="Script" id=2]
 
 [sub_resource type="CylinderShape" id=6]
 radius = 0.651501
@@ -81,7 +82,8 @@ surfaces/0 = {
 "vertex_count": 48
 }
 
-[node name="dummy" type="RigidBody"]
+[node name="dummy" type="RigidBody" groups=["enemy"]]
+script = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.572854, 0.0333622 )

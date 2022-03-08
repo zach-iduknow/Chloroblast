@@ -32,12 +32,20 @@ var hookpoint_get = false
 onready var head = $Head
 onready var camera = $Head/Camera
 onready var body = $Body
-onready var grapple_cast = $Head/Camera/GrappleCast
+onready var aim_cast = $Head/Camera/AimCast
+onready var weapon_pos = $Head/Camera/WeaponTransform/WeaponParent
+
+#guns
+var pistol = preload("res://Prefabs/Weapons/pistol.tscn")
+var new_pistol
+
 
 
 func _ready():
 	#locks mouse to center of the screen
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	new_pistol = pistol.instance()
+	weapon_pos.add_child(new_pistol)
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -48,6 +56,10 @@ func _input(event):
 func _process(delta):
 	if Input.is_action_just_pressed("test_quit"):
 		get_tree().quit()
+	
+	if Input.is_action_just_pressed("shoot"):
+		new_pistol.shoot()
+		
 
 func _physics_process(delta):
 	#grapple()
@@ -89,34 +101,6 @@ func _physics_process(delta):
 	movement = velocity + gravity_vector
 	
 	move_and_slide_with_snap(movement,snap,Vector3.UP)
-
-#this is used for vertical environment grappling
-func old_grapple():
-	#getting global transform as vector2 to stop sticking
-	#checks to see if player pushed grapple and sets grappling true
-	if Input.is_action_just_pressed("grapple"):
-		if grapple_cast.is_colliding():
-			if not grappling:
-				grappling = true
-	if grappling:
-		#turns off gravity
-		gravity_vector = Vector3()
-		#set the target based on where the raycast collided
-		if not hookpoint_get:
-			hookpoint = grapple_cast.get_collision_point()
-			hookpoint_get = true
-			print(gravity_vector)
-	
-		#sees if the grapple point is at least 1 unit away from player
-
-		if hookpoint.distance_to(transform.origin) > 1.5:
-			if hookpoint_get:
-				snap = Vector3.ZERO
-				transform.origin = lerp(transform.origin,hookpoint,grapple_speed)
-		else:
-			snap = Vector3.DOWN
-			grappling = false
-			hookpoint_get = false
 
 func grapple():
 	pass
