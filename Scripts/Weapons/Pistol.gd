@@ -1,6 +1,10 @@
 extends Spatial
 
 var damage = 10
+#flag for infinite ammo
+var unlimited := false
+var ammo = 100
+var ammo_consumption = 1
 #full auto
 var time_btw_fire := 0
 onready var curr_time_btw_fire := time_btw_fire
@@ -19,6 +23,8 @@ func _process(delta):
 #this will shoot the ray out
 func shoot():
 	if curr_time_btw_fire <= 0:
+		if !unlimited and ammo >= ammo_consumption:
+			ammo -= ammo_consumption
 		print("bang")
 		if weapon_cast.is_colliding():
 			var target = weapon_cast.get_collider()

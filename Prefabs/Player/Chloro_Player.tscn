@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Chloro_Player.gd" type="Script" id=1]
+[ext_resource path="res://UI/player_hud.tres" type="Theme" id=2]
 [ext_resource path="res://Scripts/WeaponManager.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleMesh" id=1]
@@ -35,14 +36,8 @@ enabled = true
 cast_to = Vector3( 0, 0, -60 )
 
 [node name="HUD" type="Control" parent="Head/Camera"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 20.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -61,6 +56,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="AmmoType" type="RichTextLabel" parent="Head/Camera/HUD"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -72.5
+margin_right = 72.5
+margin_bottom = 76.0
+theme = ExtResource( 2 )
+text = "Ammo"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AmmoAmount" type="RichTextLabel" parent="Head/Camera/HUD"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -72.5
+margin_top = 56.0
+margin_right = 72.5
+margin_bottom = 132.0
+theme = ExtResource( 2 )
+text = "##"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="WeaponTransform" type="Position3D" parent="Head/Camera"]
 transform = Transform( 0.991844, 0.0094631, 0.127104, 0.0045971, 0.993935, -0.109873, -0.127373, 0.109561, 0.985785, 0.935, -0.706, -0.491 )
 script = ExtResource( 3 )
@@ -69,3 +89,5 @@ script = ExtResource( 3 )
 __meta__ = {
 "_editor_description_": "Might not need, this is just to have the weapon be more separated from the transform."
 }
+
+[connection signal="spawn_weapon" from="Head/Camera/WeaponTransform" to="." method="_on_WeaponTransform_spawn_weapon"]

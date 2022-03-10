@@ -34,18 +34,22 @@ onready var camera = $Head/Camera
 onready var body = $Body
 onready var aim_cast = $Head/Camera/AimCast
 onready var weapon_pos = $Head/Camera/WeaponTransform/WeaponParent
+onready var weapon_manager = $Head/Camera/WeaponTransform
+onready var cross_hair = $Head/Camera/HUD/Crosshair
+onready var ammo_type = $Head/Camera/HUD/AmmoType
+onready var ammo_amount = $Head/Camera/HUD/AmmoAmount
 
-#guns
-var pistol = preload("res://Prefabs/Weapons/pistol.tscn")
-var new_pistol
+#mouse mode
+var is_center = true
 
 
 
 func _ready():
 	#locks mouse to center of the screen
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	new_pistol = pistol.instance()
-	weapon_pos.add_child(new_pistol)
+	#this tells the weapon manager to send the signal to spawn the gun, because it
+	#is ready first
+	weapon_manager.init_gun()
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -54,12 +58,23 @@ func _input(event):
 		head.rotation.x = clamp(head.rotation.x, deg2rad(-89.0), deg2rad(89.0))
 
 func _process(delta):
-	if Input.is_action_just_pressed("test_quit"):
-		get_tree().quit()
+	
+	if weapon_manager.active_gun.unlimited:
+		ammo_amount.text = "-"
+	else:
+		ammo_amount.text = str(weapon_manager.active_gun.ammo)
 	
 	if Input.is_action_just_pressed("shoot"):
-		new_pistol.shoot()
-		
+		weapon_manager.primary_gun.shoot()
+	#debug
+	if Input.is_action_just_pressed("test_quit"):
+		get_tree().quit()
+	if is_center and Input.is_action_just_pressed("switch_mouse"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		is_center = false
+	elif !is_center and Input.is_action_just_pressed("switch_mouse"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		is_center = true
 
 func _physics_process(delta):
 	#grapple()
@@ -102,6 +117,20 @@ func _physics_process(delta):
 	
 	move_and_slide_with_snap(movement,snap,Vector3.UP)
 
+func spawn_weapon(weapon):
+	var new_weapon = weapon.instance()
+	weapon_pos.add_child(new_weapon)
+	if weapon_manager.primary_gun == null:
+		weapon_manager.primary_gun = new_weapon
+		weapon_manager.active_gun = weapon_manager.primary_gun
+	
+
 func grapple():
 	pass
 
+
+
+
+
+func _on_WeaponTransform_spawn_weapon(weapon):
+	spawn_weapon(weapon)
