@@ -1,4 +1,4 @@
-extends Spatial
+extends KinematicBody
 
 var hp := 50.0
 onready var current_hp := hp
@@ -11,8 +11,10 @@ export(String) var mutation
 
 
 func _ready():
-	current_hp = hp / 2
+	pass
 
 func _process(delta):
 	if current_hp <= (hp / 2):
 		body.set_mutation(mutation)
+	if current_hp <= 0:
+		queue_free()

@@ -2,7 +2,7 @@ extends Spatial
 
 var damage = 10
 #flag for infinite ammo
-var unlimited := false
+var unlimited := true
 var ammo = 100
 var ammo_consumption = 1
 #full auto
@@ -31,6 +31,6 @@ func shoot():
 			if target.is_in_group("enemy"):
 				print("hit dummy")
 				var enemy = weapon_cast.get_collider()
-				enemy.hp -= damage
+				enemy.current_hp -= damage
 		#curr_time_btw_fire = time_btw_fire
 	
