@@ -40,8 +40,10 @@ gravity = 12.0
 
 [node name="dummy" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.146934, 0.482831, 0 )
-mutation = "shotgun"
+mutation = "pistol"
+effect = "health"
 
 [node name="dummy2" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.41528, 0.482831, 0 )
-mutation = "pistol"
+mutation = "shotgun"
+effect = "health"

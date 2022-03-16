@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://toon_outline_pistol.tres" type="Material" id=1]
+
+[sub_resource type="SpatialMaterial" id=15]
+resource_name = "gun_test"
+next_pass = ExtResource( 1 )
+vertex_color_use_as_albedo = true
+params_diffuse_mode = 4
+params_specular_mode = 3
+params_cull_mode = 2
+albedo_color = Color( 0.27451, 0, 0.458824, 1 )
+roughness = 0.0
+
+[sub_resource type="SphereMesh" id=13]
+material = SubResource( 15 )
+
+[sub_resource type="Curve" id=14]
+_data = [ Vector2( 0.0147059, 0.688636 ), 0.0, 0.0, 0, 0, Vector2( 0.965686, 0.0397727 ), 0.0, 0.0, 0, 0 ]
+
+[node name="OilParticles" type="CPUParticles"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.243595, 0 )
+emitting = false
+amount = 72
+lifetime = 0.5
+one_shot = true
+draw_order = 1
+mesh = SubResource( 13 )
+emission_shape = 5
+emission_ring_radius = 0.33
+emission_ring_inner_radius = 0.17
+emission_ring_height = 1.0
+emission_ring_axis = Vector3( 0, 0, 1 )
+direction = Vector3( 1.753, 0.072, 0.031 )
+spread = 180.0
+flatness = 1.0
+initial_velocity = 5.0
+initial_velocity_random = 0.48
+linear_accel = 11.01
+radial_accel = -14.68
+scale_amount = 0.1
+scale_amount_random = 0.46
+scale_amount_curve = SubResource( 14 )

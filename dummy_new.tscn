@@ -1,9 +1,10 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/Enemies/Dummy.gd" type="Script" id=1]
 [ext_resource path="res://Twillio.material" type="Material" id=2]
 [ext_resource path="res://toon_dummy.tres" type="Material" id=3]
 [ext_resource path="res://Scripts/Enemies/color_swap.gd" type="Script" id=4]
+[ext_resource path="res://Prefabs/General/OilParticles.tscn" type="PackedScene" id=5]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "dummy_Cylinder001"
@@ -19,27 +20,6 @@ surfaces/0 = {
 "skeleton_aabb": [  ],
 "vertex_count": 576
 }
-
-[sub_resource type="SpatialMaterial" id=15]
-flags_unshaded = true
-params_cull_mode = 1
-params_grow = true
-params_grow_amount = 0.1
-albedo_color = Color( 0.686275, 0.447059, 0.94902, 1 )
-
-[sub_resource type="SpatialMaterial" id=16]
-next_pass = SubResource( 15 )
-params_diffuse_mode = 4
-params_specular_mode = 3
-albedo_color = Color( 0.4, 0.0627451, 0.490196, 1 )
-metallic_specular = 0.59
-roughness = 0.0
-
-[sub_resource type="SphereMesh" id=13]
-material = SubResource( 16 )
-
-[sub_resource type="Curve" id=14]
-_data = [ Vector2( 0.0147059, 0.688636 ), 0.0, 0.0, 0, 0, Vector2( 0.970588, 0.1 ), 0.0, 0.0, 0, 0 ]
 
 [sub_resource type="ArrayMesh" id=2]
 resource_name = "dummy_Sphere002"
@@ -203,28 +183,7 @@ mesh = SubResource( 1 )
 material/0 = ExtResource( 3 )
 script = ExtResource( 4 )
 
-[node name="CPUParticles" type="CPUParticles" parent="Body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.243595, 0 )
-emitting = false
-amount = 36
-draw_order = 1
-mesh = SubResource( 13 )
-emission_shape = 5
-emission_ring_radius = 0.33
-emission_ring_inner_radius = 0.17
-emission_ring_height = 1.0
-emission_ring_axis = Vector3( 0, 0, 1 )
-direction = Vector3( 1.753, 0.072, 0.031 )
-spread = 180.0
-flatness = 1.0
-initial_velocity = 5.0
-initial_velocity_random = 0.48
-linear_accel = 11.01
-radial_accel = -14.68
-scale_amount = 0.1
-scale_amount_random = 0.46
-scale_amount_curve = SubResource( 14 )
-anim_speed = 102.17
+[node name="OilParticles" parent="Body" instance=ExtResource( 5 )]
 
 [node name="TopLeft" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.628952, 1.44561, 0 )

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Models/health_particle_Cube.mesh" type="ArrayMesh" id=1]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.465686, 0.918182 ), 0.0, 0.0, 0, 0, Vector2( 0.990196, 0.0545454 ), 0.0, 0.0, 0, 0 ]
+
+[node name="HealthParticles" type="CPUParticles"]
+transform = Transform( 0.304217, 0, 0, 0, 0.304217, 0, 0, 0, 0.304217, 0, 1.53223, 0 )
+amount = 3
+mesh = ExtResource( 1 )
+emission_shape = 2
+emission_box_extents = Vector3( 2, 1, 1 )
+gravity = Vector3( 0, 9.8, 0 )
+scale_amount_curve = SubResource( 1 )

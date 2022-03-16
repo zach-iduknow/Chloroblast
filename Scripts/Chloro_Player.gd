@@ -39,6 +39,7 @@ onready var cross_hair = $Head/Camera/HUD/Crosshair
 onready var ammo_type = $Head/Camera/HUD/AmmoType
 onready var ammo_amount = $Head/Camera/HUD/AmmoAmount
 
+
 #mouse mode
 var is_center = true
 
@@ -109,6 +110,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		snap = Vector3.ZERO
 		
+		#add jump acceleration to reach peak faster(look at better jumps in four lines)
 		gravity_vector = Vector3.UP * jump_force
 	
 	#makes for smooth movement by interpolating from whatever the current direction is times speed by delta
