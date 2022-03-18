@@ -2,8 +2,15 @@ extends Position3D
 
 #weapons
 var pistol = preload("res://Prefabs/Weapons/pistol.tscn")
+var pistol_mutations = {}
+
 var shotgun
+var shotgun_mutaions = {}
+
 var machine_gun
+var machine_mtations = {}
+
+#sends a weapon to the player script to switch weapons
 signal spawn_weapon(weapon)
 
 #weapon holders
@@ -18,6 +25,7 @@ func _ready():
 	pass
 
 func _process(delta):
+	#this is probably too complicated
 	if Input.is_action_just_pressed("swap_gun"):
 		if active_gun == primary_gun and secondary_gun != null:
 			active_gun = secondary_gun

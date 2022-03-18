@@ -8,9 +8,8 @@ onready var particles = $Body/OilParticles
 var showing_mutation := false
 var health_particle = preload("res://Prefabs/General/HealthParticles.tscn")
 
-onready var material = body.mesh.surface_get_material(0)
-
-export(String, "none","pistol", "shotgun", "machine") var mutation 
+export(String, "none","pistol", "shotgun", "machine") var mutation
+#this will be randomized 
 export(String, "none", "health", "ammo", "damage") var effect
 
 func _ready():

@@ -184,6 +184,15 @@ material/0 = ExtResource( 3 )
 script = ExtResource( 4 )
 
 [node name="OilParticles" parent="Body" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.243595, 0 )
+emitting = false
+amount = 12
+one_shot = true
+explosiveness = 0.64
+emission_sphere_radius = 1.0
+direction = Vector3( 0, -1, 0 )
+spread = 44.59
+gravity = Vector3( 0, -1, 0 )
 
 [node name="TopLeft" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.628952, 1.44561, 0 )

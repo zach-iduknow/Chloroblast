@@ -3,8 +3,10 @@ extends KinematicBody
 #basic player movement variables
 export var speed := 7.0
 export var gravity := 9.8
+#increase fall speed
+export var gravity_multi := 2.0
 export var jump_force := 5.0
-export var grapple_speed := 0.05
+
 #player movement vectors(movment is the final vector used for move_and_slide())
 var movement = Vector3()
 #keeps track of player direction
@@ -23,10 +25,7 @@ export var air_acceleration = 1
 onready var acceleration = default_acceleration
 #used for standing on slopes
 var snap
-#used for grappling
-var grappling = false
-var hookpoint = Vector3()
-var hookpoint_get = false
+
 
 #player components
 onready var head = $Head
@@ -40,7 +39,7 @@ onready var ammo_type = $Head/Camera/HUD/AmmoType
 onready var ammo_amount = $Head/Camera/HUD/AmmoAmount
 
 
-#mouse mode
+#mouse mode - for debugging
 var is_center = true
 
 
@@ -59,14 +58,15 @@ func _input(event):
 		head.rotation.x = clamp(head.rotation.x, deg2rad(-89.0), deg2rad(89.0))
 
 func _process(delta):
-	
 	if weapon_manager.active_gun.unlimited:
 		ammo_amount.text = "-"
 	else:
+		#this is based on the weapon prefab
+		#it should be based on the weapon manager's tracked ammo
 		ammo_amount.text = str(weapon_manager.active_gun.ammo)
 	
 	if Input.is_action_just_pressed("shoot"):
-		weapon_manager.primary_gun.shoot()
+		weapon_manager.active_gun.shoot()
 	#debug
 	if Input.is_action_just_pressed("test_quit"):
 		get_tree().quit()
@@ -89,12 +89,7 @@ func _physics_process(delta):
 	direction = Vector3(right_movement, 0 ,forward_movement).rotated(Vector3.UP,h_rotation).normalized()
 	
 	if is_on_floor():
-		#makes center of gravity perpendicular to the floor's facing direction
-		#this line screws up grapple, need a way to turn it off
-#		I'm removing this since I'm removing vertical grappling
-#		if not grappling:
-#			snap = -get_floor_normal()
-		
+		#makes center of gravity perpendicular to the floor's facing direction		
 		snap = -get_floor_normal()
 		#reseting the acceleration gained from falling
 		gravity_vector = Vector3.ZERO
@@ -104,7 +99,7 @@ func _physics_process(delta):
 		snap = Vector3.DOWN
 		acceleration = air_acceleration
 		#adding the acceleration from gravity
-		gravity_vector += Vector3.DOWN * gravity * delta
+		gravity_vector += Vector3.DOWN * gravity * (gravity_multi*delta)
 	
 	#I can eventually add a variable for double jumping
 	if Input.is_action_just_pressed("jump") and is_on_floor():
@@ -121,18 +116,13 @@ func _physics_process(delta):
 
 func spawn_weapon(weapon):
 	var new_weapon = weapon.instance()
+	#should check if the weapon_pos already has a child first
+	#everything here may cause problems with more than one gun
 	weapon_pos.add_child(new_weapon)
 	if weapon_manager.primary_gun == null:
 		weapon_manager.primary_gun = new_weapon
 		weapon_manager.active_gun = weapon_manager.primary_gun
 	
-
-func grapple():
-	pass
-
-
-
-
 
 func _on_WeaponTransform_spawn_weapon(weapon):
 	spawn_weapon(weapon)

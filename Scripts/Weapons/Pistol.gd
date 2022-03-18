@@ -3,7 +3,9 @@ extends Spatial
 var damage = 10
 #flag for infinite ammo
 export var unlimited := true
+#this should be a max(i.e. readonly)
 var ammo = 100
+#this should also be a reference
 var ammo_consumption = 1
 #full auto
 var time_btw_fire := 0
@@ -26,6 +28,8 @@ func shoot():
 		if !unlimited and ammo >= ammo_consumption:
 			ammo -= ammo_consumption
 		print("bang")
+		#not sure why this works, but if it doesn't for other guns
+		#have it look for the look cast in the player script and take info from that
 		if weapon_cast.is_colliding():
 			var target = weapon_cast.get_collider()
 			if target.is_in_group("enemy"):

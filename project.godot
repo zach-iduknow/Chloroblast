@@ -14,6 +14,10 @@ config/name="Chloroblast"
 run/main_scene="res://Levels/Sandbox.tscn"
 config/icon="res://icon.png"
 
+[debug]
+
+gdscript/completion/autocomplete_setters_and_getters=true
+
 [input]
 
 move_forward={
