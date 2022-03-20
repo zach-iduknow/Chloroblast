@@ -10,7 +10,7 @@ mid_height = 3.0
 [sub_resource type="CapsuleShape" id=2]
 height = 3.0
 
-[node name="Chloro_Player" type="KinematicBody" groups=["player"]]
+[node name="Chloro_Player" type="KinematicBody"]
 script = ExtResource( 1 )
 jump_force = 10.0
 mouse_sensitivity = 0.5

@@ -2,7 +2,7 @@ extends Position3D
 
 #weapons
 var pistol = preload("res://Prefabs/Weapons/pistol.tscn")
-var pistol_mutations = {"double" : true}
+var pistol_mutations = {}
 
 var shotgun
 var shotgun_mutaions = {}

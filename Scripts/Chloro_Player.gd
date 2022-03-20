@@ -26,9 +26,6 @@ onready var acceleration = default_acceleration
 #used for standing on slopes
 var snap
 
-#maw - consuming level props and enemies
-#checks to see if your're looking at an enemy
-var target_enemy
 
 #player components
 onready var head = $Head
@@ -61,7 +58,6 @@ func _input(event):
 		head.rotation.x = clamp(head.rotation.x, deg2rad(-89.0), deg2rad(89.0))
 
 func _process(delta):
-	consume_enemy()
 	if weapon_manager.active_gun.unlimited:
 		ammo_amount.text = "-"
 	else:
@@ -80,6 +76,7 @@ func _process(delta):
 	elif !is_center and Input.is_action_just_pressed("switch_mouse"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		is_center = true
+
 func _physics_process(delta):
 	#grapple()
 	#resetting the direction vector every frame
@@ -121,24 +118,10 @@ func spawn_weapon(weapon):
 	var new_weapon = weapon.instance()
 	#should check if the weapon_pos already has a child first
 	#everything here may cause problems with more than one gun
-	if weapon_pos.get_child_count() == 0:
-		weapon_pos.add_child(new_weapon)
-		weapon_manager.active_gun = new_weapon
-		
+	weapon_pos.add_child(new_weapon)
 	if weapon_manager.primary_gun == null:
 		weapon_manager.primary_gun = new_weapon
-	
-	elif weapon_manager.secondary_gun == null:
-		weapon_manager.secondary_gun = new_weapon
-	
-#consume low health enemy
-func consume_enemy():
-	if(aim_cast.is_colliding() and aim_cast.get_collider().is_in_group("enemy")):
-		target_enemy = aim_cast.get_collider()
-	
-	if Input.is_action_just_pressed("interact") and target_enemy != null:
-		target_enemy.move_to_player(5.0)
-		pass
+		weapon_manager.active_gun = weapon_manager.primary_gun
 	
 
 func _on_WeaponTransform_spawn_weapon(weapon):
