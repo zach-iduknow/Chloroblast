@@ -2,13 +2,17 @@ extends Position3D
 
 #weapons
 var pistol = preload("res://Prefabs/Weapons/pistol.tscn")
-var pistol_mutations = {"double" : true}
+#double shouldn't be unlocked yet
+var pistol_mutations = ["double"]
+var current_pistol_mutation
 
 var shotgun
-var shotgun_mutaions = {}
+var shotgun_mutaions = []
+var current_shotgun_mutation
 
 var machine_gun
-var machine_mtations = {}
+var machine_mtations = []
+var current_machine_mutation
 
 #sends a weapon to the player script to switch weapons
 signal spawn_weapon(weapon)

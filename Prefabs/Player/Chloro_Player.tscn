@@ -34,8 +34,10 @@ cull_mask = 1048571
 fov = 81.2
 
 [node name="AimCast" type="RayCast" parent="Head/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.991006 )
 enabled = true
 cast_to = Vector3( 0, 0, -60 )
+collision_mask = 2
 
 [node name="HUD" type="Control" parent="Head/Camera"]
 anchor_right = 1.0
@@ -84,7 +86,7 @@ __meta__ = {
 }
 
 [node name="WeaponTransform" type="Position3D" parent="Head/Camera"]
-transform = Transform( 0.991844, 0.0094631, 0.127104, 0.0045971, 0.993935, -0.109873, -0.127373, 0.109561, 0.985785, 0.935, -0.706, -0.491 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.935, -0.706, -0.491 )
 script = ExtResource( 3 )
 
 [node name="WeaponParent" type="Spatial" parent="Head/Camera/WeaponTransform"]

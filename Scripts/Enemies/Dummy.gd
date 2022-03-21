@@ -1,6 +1,6 @@
 extends KinematicBody
 
-var hp := 50.0
+var hp := 60.0
 onready var current_hp := hp
 onready var can_consume = false
 onready var body = $Body
@@ -32,10 +32,9 @@ func _process(delta):
 	if being_eaten == true:
 		if transform.origin.distance_to(player.transform.origin) > 4:
 			transform.origin = lerp(transform.origin, player.transform.origin, eat_speed * delta)
-			print(transform.origin.distance_to(player.transform.origin))
-		
 		else:
 			#provide the gun and the mutations
+			choose_mutation()
 			being_eaten = false
 			queue_free()
 	
@@ -48,9 +47,20 @@ func spawn_effect():
 		var new_particle = health_particle.instance()
 		body.add_child(new_particle)
 
-
 func move_to_player(speed):
 	print("arrrg")
 	if(current_hp <= hp/2):
 		being_eaten = true
 		eat_speed = speed
+
+func choose_mutation():
+	var mutations = player.weapon_manager
+	match mutation:
+		"pistol":
+			var pistol_mutation = mutations.pistol_mutations[randi() % mutations.pistol_mutations.size()]
+			if mutations.current_pistol_mutation == null:
+				mutations.current_pistol_mutation = pistol_mutation
+		"shotgun":
+			pass
+		"machine":
+			pass

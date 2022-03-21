@@ -69,8 +69,6 @@ func _process(delta):
 		#it should be based on the weapon manager's tracked ammo
 		ammo_amount.text = str(weapon_manager.active_gun.ammo)
 	
-	if Input.is_action_just_pressed("shoot"):
-		weapon_manager.active_gun.shoot()
 	#debug
 	if Input.is_action_just_pressed("test_quit"):
 		get_tree().quit()
@@ -116,7 +114,9 @@ func _physics_process(delta):
 	movement = velocity + gravity_vector
 	
 	move_and_slide_with_snap(movement,snap,Vector3.UP)
-
+	
+	if Input.is_action_just_pressed("shoot"):
+		weapon_manager.active_gun.shoot()
 func spawn_weapon(weapon):
 	var new_weapon = weapon.instance()
 	#should check if the weapon_pos already has a child first
