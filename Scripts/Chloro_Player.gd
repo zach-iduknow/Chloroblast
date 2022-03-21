@@ -30,6 +30,13 @@ var snap
 #checks to see if your're looking at an enemy
 var target_enemy
 
+#Player Stats
+var max_hp := 100.0
+onready var current_hp := max_hp
+#poison, burn, slowness
+var debuffs = {"wilt":0, "fire":0, "rooted":0}
+var buffs = {}
+
 #player components
 onready var head = $Head
 onready var camera = $Head/Camera
@@ -140,6 +147,19 @@ func consume_enemy():
 		target_enemy.move_to_player(5.0)
 		pass
 	
+func apply_debuffs():
+	for i in debuffs.values():
+		#replace with function that applies what the debuff does
+		print(debuffs[i])
+		#reduce by consumption rate
+		debuffs[i] -= 1
+
+func apply_buffs():
+	for i in buffs.values():
+		#replace with function that applies what the debuff does
+		print(buffs[i])
+		#reduce by consumption rate
+		buffs[i] -= 1
 
 func _on_WeaponTransform_spawn_weapon(weapon):
 	spawn_weapon(weapon)
