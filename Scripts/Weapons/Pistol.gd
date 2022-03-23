@@ -19,10 +19,13 @@ func _ready():
 	pass
 
 func _process(delta):
+	#sets the active mutation to whatever the player has
 	active_mutation = player.weapon_manager.current_pistol_mutation
-	print(active_mutation)
+	
+	#used to control fire rate/type
 	if curr_time_btw_fire > 0:
 		curr_time_btw_fire -= 1
+	#checks if player is aiming at enemy
 	if weapon_cast.is_colliding() and weapon_cast.is_in_group("enemy"):
 		print("enemy found")
 
@@ -37,6 +40,7 @@ func shoot():
 			var target = weapon_cast.get_collider()
 			if target.is_in_group("enemy"):
 				var enemy = weapon_cast.get_collider()
+				#applies damage based on the mutation
 				match active_mutation:
 					"double":
 						enemy.take_damage(damage * 2)

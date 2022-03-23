@@ -1,15 +1,17 @@
 extends Position3D
 
-#weapons
+#pistol items
 var pistol = preload("res://Prefabs/Weapons/pistol.tscn")
 #double shouldn't be unlocked yet
 var pistol_mutations = ["double"]
 var current_pistol_mutation
 
+#shotgun items
 var shotgun
 var shotgun_mutaions = []
 var current_shotgun_mutation
 
+#machine gun items
 var machine_gun
 var machine_mtations = []
 var current_machine_mutation
@@ -38,5 +40,6 @@ func _process(delta):
 		else:
 			print("no other weapon to swap too!")
 
+#signal to player to spawn gun, for now it's the pistol
 func init_gun():
 	emit_signal("spawn_weapon",pistol)
