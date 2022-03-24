@@ -48,7 +48,8 @@ func _process(delta):
 			transform.origin = lerp(transform.origin, player.transform.origin, eat_speed * delta)
 		else:
 			#provide the gun and the mutations
-			choose_mutation()
+			#WIP choose_mutation() rework
+			#choose_mutation()
 			being_eaten = false
 			queue_free()
 	
@@ -69,6 +70,7 @@ func move_to_player(speed):
 
 func choose_mutation():
 	var mutations = player.weapon_manager
+	#gotta redo this for use with multiple weapons with similar bases
 	match mutation:
 		"pistol":
 			#choses a random mutation from the player's unlocked pistol mutation

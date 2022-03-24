@@ -1,20 +1,20 @@
 extends Position3D
 
-#pistol items
-var pistol = preload("res://Prefabs/Weapons/pistol.tscn")
+#seedshot(starter pistol) items
+var seedshot = preload("res://Prefabs/Weapons/seedshot.tscn")
 #double shouldn't be unlocked yet
-var pistol_mutations = ["double"]
-var current_pistol_mutation
+var seedshot_mutations = ["double"]
+var current_seedshot_mutation
 
-#shotgun items
-var shotgun
-var shotgun_mutaions = []
-var current_shotgun_mutation
+#sunflakker(shotgun) items
+var sunflakker
+var sunflakker_mutaions = []
+var current_sunflakker_mutation
 
-#machine gun items
-var machine_gun
-var machine_mtations = []
-var current_machine_mutation
+#pepper grinder items
+var pepper_grinder
+var pepper_grinder_mtations = []
+var current_pepper_grinder_mutation
 
 #sends a weapon to the player script to switch weapons
 signal spawn_weapon(weapon)
@@ -42,4 +42,5 @@ func _process(delta):
 
 #signal to player to spawn gun, for now it's the pistol
 func init_gun():
-	emit_signal("spawn_weapon",pistol)
+	print("start up")
+	emit_signal("spawn_weapon",seedshot)

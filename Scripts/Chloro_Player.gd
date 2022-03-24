@@ -42,17 +42,29 @@ onready var head = $Head
 onready var camera = $Head/Camera
 #main hitbox(enviromental, projectile collisions)
 onready var body = $Body
-onready var aim_cast = $Head/Camera/AimCast
 #this is the position of the weapon(honestly, the weaoib transform could do this)
 onready var weapon_pos = $Head/Camera/WeaponTransform/WeaponParent
 #holds weapon details, mutations, damage, ammo, etc.
 onready var weapon_manager = $Head/Camera/WeaponTransform
+
+#player raycasts
+onready var look_cast = $Head/Camera/LookCast
+#same as look cast, but used specifically for single shot guns
+onready var single_shot = $Head/Camera/SingleShot/Single
+#same as single shot, but randomizes angle slightly with each bullet
+onready var machine_shot = $Head/Camera/MachineShot/Single
+#this is used for the shotgun and checks each ray for enemy collision
+onready var cluster_shot = $Head/Camera/ClusterShot.get_children()
+
+#player ui
 #visual for crosshair
 onready var cross_hair = $Head/Camera/HUD/Crosshair
 #UI display for ammo type
 onready var ammo_type = $Head/Camera/HUD/AmmoType
 #UI display for ammo amount
 onready var ammo_amount = $Head/Camera/HUD/AmmoAmount
+
+#dynamic gun variables
 
 
 #mouse mode - for debugging
@@ -82,7 +94,7 @@ func _process(delta):
 	#constantly running function for whenever player eats enemy
 	consume_enemy()
 	#sets ammo text to a dash if infinite
-	if weapon_manager.active_gun.unlimited:
+	if weapon_manager.active_gun.unlimited_ammo:
 		ammo_amount.text = "-"
 	else:
 		#this is based on the weapon prefab
@@ -146,9 +158,7 @@ func _physics_process(delta):
 	move_and_slide_with_snap(movement,snap,Vector3.UP)
 	
 	#shooting a weapon
-	#should have different input checks based on gun's fire type
-	if Input.is_action_just_pressed("shoot"):
-		weapon_manager.active_gun.shoot()
+	if weapon_manager.active_gun != null: shoot_gun()
 
 #function to swap to new weapon
 func spawn_weapon(weapon):
@@ -166,12 +176,28 @@ func spawn_weapon(weapon):
 	#assigns gun to secondary slot
 	elif weapon_manager.secondary_gun == null:
 		weapon_manager.secondary_gun = new_weapon
-	
+
+func shoot_gun():
+	var active_gun = weapon_manager.active_gun
+	#match statement to
+	if active_gun != null:
+		match(active_gun.fire_type):
+			"semi":
+				if Input.is_action_just_pressed("shoot"):
+					active_gun.shoot()
+			"semi_burst":
+				if Input.is_action_just_pressed("shoot"):
+					active_gun.shoot()
+			"auto":
+				pass
+			"auto_burst":
+				pass
+
 #consume low health enemy
 func consume_enemy():
 	#if you're looking at an enemy, it's now your target
-	if(aim_cast.is_colliding() and aim_cast.get_collider().is_in_group("enemy")):
-		target_enemy = aim_cast.get_collider()
+	if(look_cast.is_colliding() and look_cast.get_collider().is_in_group("enemy")):
+		target_enemy = look_cast.get_collider()
 	
 	#if you press interact while looking at an enemy you eat it
 	if Input.is_action_just_pressed("interact") and target_enemy != null:

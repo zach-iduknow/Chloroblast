@@ -33,10 +33,91 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.331754, -0.193027 )
 cull_mask = 1048571
 fov = 81.2
 
-[node name="AimCast" type="RayCast" parent="Head/Camera"]
+[node name="LookCast" type="RayCast" parent="Head/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.991006 )
+visible = false
+enabled = true
+cast_to = Vector3( 0, 0, -60 )
+collision_mask = 2
+
+[node name="SingleShot" type="Spatial" parent="Head/Camera"]
+visible = false
+
+[node name="Single" type="RayCast" parent="Head/Camera/SingleShot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.991006 )
 enabled = true
 cast_to = Vector3( 0, 0, -60 )
+collision_mask = 2
+
+[node name="MachineShot" type="Spatial" parent="Head/Camera"]
+
+[node name="Single" type="RayCast" parent="Head/Camera/MachineShot"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.991006 )
+enabled = true
+cast_to = Vector3( 0, 0, -60 )
+collision_mask = 2
+
+[node name="ClusterShot" type="Spatial" parent="Head/Camera"]
+visible = false
+
+[node name="Shot1" type="RayCast" parent="Head/Camera/ClusterShot"]
+transform = Transform( 0.976171, 0, 0.217002, 0, 1, 0, -0.217002, 0, 0.976171, 0, 0, -0.991006 )
+enabled = true
+cast_to = Vector3( 0, 0, -9.239 )
+collision_mask = 2
+
+[node name="Shot2" type="RayCast" parent="Head/Camera/ClusterShot"]
+transform = Transform( 0.980344, -0.00463189, -0.19724, -0.0181277, 0.993381, -0.113428, 0.19646, 0.114774, 0.973771, 0, 0, -0.991006 )
+enabled = true
+cast_to = Vector3( 0, 0, -9.239 )
+collision_mask = 2
+
+[node name="Shot3" type="RayCast" parent="Head/Camera/ClusterShot"]
+transform = Transform( 0.986861, 0.0141632, 0.160947, 0, 0.99615, -0.0876599, -0.161569, 0.0865082, 0.983062, 0, 0, -0.991006 )
+enabled = true
+cast_to = Vector3( 0, 0, -9.239 )
+collision_mask = 2
+
+[node name="Shot4" type="RayCast" parent="Head/Camera/ClusterShot"]
+transform = Transform( 0.96677, -0.0369441, 0.252965, 0, 0.989503, 0.144512, -0.255648, -0.13971, 0.956622, 0, 0, -0.991006 )
+enabled = true
+cast_to = Vector3( 0, 0, -9.239 )
+collision_mask = 2
+
+[node name="Shot5" type="RayCast" parent="Head/Camera/ClusterShot"]
+transform = Transform( 0.999873, -0.000177232, -0.0159158, 0.00129395, 0.997533, 0.0701814, 0.015864, -0.0701931, 0.997407, 0, 0, -0.991006 )
+enabled = true
+cast_to = Vector3( 0, 0, -9.239 )
+collision_mask = 2
+
+[node name="Shot6" type="RayCast" parent="Head/Camera/ClusterShot"]
+transform = Transform( 0.99906, -0.00747721, -0.0426943, 0.00627484, 0.999582, -0.028227, 0.0428875, 0.0279326, 0.998689, 0, 0, -0.991006 )
+enabled = true
+cast_to = Vector3( 0, 0, -9.239 )
+collision_mask = 2
+
+[node name="Shot7" type="RayCast" parent="Head/Camera/ClusterShot"]
+transform = Transform( 0.994375, 0.00607178, -0.105742, -0.00524187, 0.999953, 0.0081246, 0.105786, -0.0075246, 0.994361, 0, 0, -0.991006 )
+enabled = true
+cast_to = Vector3( 0, 0, -9.239 )
+collision_mask = 2
+
+[node name="Shot8" type="RayCast" parent="Head/Camera/ClusterShot"]
+transform = Transform( 0.99999, -0.000397787, -0.00452039, -0.000539187, 0.978678, -0.2054, 0.0045057, 0.205401, 0.978668, 0, 0, -0.991006 )
+enabled = true
+cast_to = Vector3( 0, 0, -9.239 )
+collision_mask = 2
+
+[node name="Shot9" type="RayCast" parent="Head/Camera/ClusterShot"]
+transform = Transform( 0.96677, -0.0369441, 0.252965, 0, 0.989503, 0.144512, -0.255648, -0.13971, 0.956622, 0, 0, -0.991006 )
+enabled = true
+cast_to = Vector3( 0, 0, -9.239 )
+collision_mask = 2
+
+[node name="Shot10" type="RayCast" parent="Head/Camera/ClusterShot"]
+transform = Transform( 0.96594, 0.0141785, -0.258378, 0.00111528, 0.99826, 0.058949, 0.258764, -0.0572294, 0.964244, 0, 0, -0.991006 )
+enabled = true
+cast_to = Vector3( 0, 0, -9.239 )
 collision_mask = 2
 
 [node name="HUD" type="Control" parent="Head/Camera"]
