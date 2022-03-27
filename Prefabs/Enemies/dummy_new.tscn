@@ -1,8 +1,8 @@
 [gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/Enemies/Dummy.gd" type="Script" id=1]
-[ext_resource path="res://Twillio.material" type="Material" id=2]
-[ext_resource path="res://toon_dummy.tres" type="Material" id=3]
+[ext_resource path="res://Materials/Twillio.material" type="Material" id=2]
+[ext_resource path="res://Materials/toon_dummy.tres" type="Material" id=3]
 [ext_resource path="res://Scripts/Enemies/color_swap.gd" type="Script" id=4]
 [ext_resource path="res://Prefabs/General/OilParticles.tscn" type="PackedScene" id=5]
 

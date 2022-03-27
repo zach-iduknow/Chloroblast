@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/gun_test.glb-400026a95851f92419a0cceb89173e0e.scn"
+path="res://.import/sunflakker.glb-25607e87f8a677f1870a5a0716ed0cfa.scn"
 
 [deps]
 
-source_file="res://gun_test.glb"
-dest_files=[ "res://.import/gun_test.glb-400026a95851f92419a0cceb89173e0e.scn" ]
+source_file="res://Models/sunflakker.glb"
+dest_files=[ "res://.import/sunflakker.glb-25607e87f8a677f1870a5a0716ed0cfa.scn" ]
 
 [params]
 

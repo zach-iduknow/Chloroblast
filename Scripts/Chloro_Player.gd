@@ -99,7 +99,7 @@ func _process(delta):
 	else:
 		#this is based on the weapon prefab
 		#it should be based on the weapon manager's tracked ammo
-		ammo_amount.text = str(weapon_manager.active_gun.ammo)
+		ammo_amount.text = str(weapon_manager.active_gun.current_ammo)
 	
 	#debugging for quick quitting
 	if Input.is_action_just_pressed("test_quit"):

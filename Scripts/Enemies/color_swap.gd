@@ -1,8 +1,8 @@
 extends MeshInstance
 
 #preloaded outlines for what fun an enemy drops
-var shotgun_outline = preload("res://toon_outline_shotgun.tres")
-var pistol_outline = preload("res://toon_outline_pistol.tres")
+var shotgun_outline = preload("res://Materials/toon_outline_shotgun.tres")
+var pistol_outline = preload("res://Materials/toon_outline_pistol.tres")
 #gets material on enemy
 onready var mat = get_active_material(0)
 

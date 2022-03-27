@@ -7,12 +7,8 @@ export(String, "--","pistol", "shotgun", "machine gun") var gun_type
 export(String, "--","semi", "auto", "semi_burst", "auto_burst") var fire_type
 
 #increase value to slow fire rate, decrease to increase
-export var time_btw_fire := 0
+export var time_btw_fire := 0.0
 onready var current_time_btw_fire = time_btw_fire
-#flag for infinite ammo
-export var unlimited_ammo := true
-export var max_ammo = 100
-onready var current_ammo = max_ammo
 export var damage = 10
 #for machine gun
 #lower to tighten spread
@@ -29,12 +25,25 @@ export var ammo_consumption = 1
 onready var curr_time_btw_fire := time_btw_fire
 
 onready var player = get_tree().get_nodes_in_group("player")[0]
+onready var weapon_manager = player.weapon_manager
 var weapon_cast
 var active_mutation
+
+var current_ammo
+#flag for infinite ammo
+export var unlimited_ammo := true
 
 func _ready():
 	rng.randomize()
 	choose_cast()
+	#tells gun what ammo reserve to take from
+	match(gun_type):
+		"pistol":
+			current_ammo = weapon_manager.curr_pistol
+		"shotgun":
+			current_ammo = weapon_manager.curr_shotgun
+		"machine":
+			current_ammo = weapon_manager.curr_machine
 
 func _process(delta):
 	#sets the active mutation to whatever the player has
@@ -94,8 +103,7 @@ func single_shot():
 	if weapon_cast.is_colliding():
 		var target = weapon_cast.get_collider()
 		if target.is_in_group("enemy"):
-			var enemy = weapon_cast.get_collider()
-			enemy.take_damage(damage)
+			target.take_damage(damage)
 			#applies damage based on the mutation
 			#mutation system will have to be redone if I do a bunch of different guns
 #			match active_mutation:
@@ -106,12 +114,16 @@ func single_shot():
 
 #used for shotgun patterns
 func cluster_shot():
+	var x = 0
 	for i in weapon_cast:
 		if i.is_colliding():
 			var target = i.get_collider()
 			if target.is_in_group("enemy"):
-				var enemy = weapon_cast.get_collider()
-				enemy.take_damage(damage) 
+				print("Ray: " + str(x) +" hit")
+				x += 1
+				target.take_damage(damage)
+	print("--------")
+	x = 0 
 
 #used for machine gun, ray randomized angle slightly with each bullet
 func machine_shot():
@@ -126,6 +138,4 @@ func machine_shot():
 	if weapon_cast.is_colliding():
 		var target = weapon_cast.get_collider()
 		if target.is_in_group("enemy"):
-			var enemy = weapon_cast.get_collider()
-			enemy.take_damage(damage)
-	
+			target.take_damage(damage)

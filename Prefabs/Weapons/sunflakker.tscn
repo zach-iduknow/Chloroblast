@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Models/sunflakker.glb" type="PackedScene" id=1]
+[ext_resource path="res://Models/cc_mat.material" type="Material" id=2]
+[ext_resource path="res://Scripts/Weapons/WeaponObject.gd" type="Script" id=3]
+
+[node name="sunflakker" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+gun_name = "Sunflakker"
+gun_type = "shotgun"
+fire_type = "semi"
+time_btw_fire = 0.75
+damage = 5
+unlimited_ammo = false
+
+[node name="Body" parent="." index="1"]
+material/0 = ExtResource( 2 )

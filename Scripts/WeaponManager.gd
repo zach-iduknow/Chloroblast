@@ -1,5 +1,15 @@
 extends Position3D
 
+#Ammo types
+export var max_pistol := 100
+onready var curr_pistol := max_pistol
+
+export var max_shotgun := 25
+onready var curr_shotgun := max_shotgun
+
+export var max_machine := 250
+onready var curr_machine := max_machine
+
 #seedshot(starter pistol) items
 var seedshot = preload("res://Prefabs/Weapons/seedshot.tscn")
 #double shouldn't be unlocked yet
@@ -7,7 +17,7 @@ var seedshot_mutations = ["double"]
 var current_seedshot_mutation
 
 #sunflakker(shotgun) items
-var sunflakker
+var sunflakker = preload("res://Prefabs/Weapons/sunflakker.tscn")
 var sunflakker_mutaions = []
 var current_sunflakker_mutation
 
@@ -43,4 +53,4 @@ func _process(delta):
 #signal to player to spawn gun, for now it's the pistol
 func init_gun():
 	print("start up")
-	emit_signal("spawn_weapon",seedshot)
+	emit_signal("spawn_weapon",sunflakker)

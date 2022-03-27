@@ -45,11 +45,13 @@ visible = false
 
 [node name="Single" type="RayCast" parent="Head/Camera/SingleShot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.991006 )
+visible = false
 enabled = true
 cast_to = Vector3( 0, 0, -60 )
 collision_mask = 2
 
 [node name="MachineShot" type="Spatial" parent="Head/Camera"]
+visible = false
 
 [node name="Single" type="RayCast" parent="Head/Camera/MachineShot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.991006 )
@@ -58,7 +60,6 @@ cast_to = Vector3( 0, 0, -60 )
 collision_mask = 2
 
 [node name="ClusterShot" type="Spatial" parent="Head/Camera"]
-visible = false
 
 [node name="Shot1" type="RayCast" parent="Head/Camera/ClusterShot"]
 transform = Transform( 0.976171, 0, 0.217002, 0, 1, 0, -0.217002, 0, 0.976171, 0, 0, -0.991006 )
