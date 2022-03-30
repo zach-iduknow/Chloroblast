@@ -42,8 +42,6 @@ onready var head = $Head
 onready var camera = $Head/Camera
 #main hitbox(enviromental, projectile collisions)
 onready var body = $Body
-#this is the position of the weapon(honestly, the weaoib transform could do this)
-onready var weapon_pos = $Head/Camera/WeaponTransform/WeaponParent
 #holds weapon details, mutations, damage, ammo, etc.
 onready var weapon_manager = $Head/Camera/WeaponTransform
 
@@ -94,12 +92,13 @@ func _process(delta):
 	#constantly running function for whenever player eats enemy
 	consume_enemy()
 	#sets ammo text to a dash if infinite
-	if weapon_manager.active_gun.unlimited_ammo:
-		ammo_amount.text = "-"
-	else:
-		#this is based on the weapon prefab
-		#it should be based on the weapon manager's tracked ammo
-		ammo_amount.text = str(weapon_manager.active_gun.current_ammo)
+	if is_instance_valid(weapon_manager.active_gun):
+		if weapon_manager.active_gun.unlimited_ammo:
+			ammo_amount.text = "-"
+		else:
+			#this is based on the weapon prefab
+			#it should be based on the weapon manager's tracked ammo
+			ammo_amount.text = str(weapon_manager.active_gun.current_ammo)
 	
 	#debugging for quick quitting
 	if Input.is_action_just_pressed("test_quit"):
@@ -157,25 +156,23 @@ func _physics_process(delta):
 	#moving the player
 	move_and_slide_with_snap(movement,snap,Vector3.UP)
 	
-	#shooting a weapon
-	if weapon_manager.active_gun != null: shoot_gun()
 
 #function to swap to new weapon
 func spawn_weapon(weapon):
-	var new_weapon = weapon.instance()
 	#should check if the weapon_pos already has a child first
 	#everything here may cause problems with more than one gun
-	if weapon_pos.get_child_count() == 0:
-		weapon_pos.add_child(new_weapon)
+	if weapon_manager.get_child_count() == 0:
+		var new_weapon = weapon.instance()
+		weapon_manager.add_child(new_weapon)
 		weapon_manager.active_gun = new_weapon
 	
 	#assigns gun to primary slot
 	if weapon_manager.primary_gun == null:
-		weapon_manager.primary_gun = new_weapon
+		weapon_manager.primary_gun = weapon
 	
 	#assigns gun to secondary slot
 	elif weapon_manager.secondary_gun == null:
-		weapon_manager.secondary_gun = new_weapon
+		weapon_manager.secondary_gun = weapon
 
 func shoot_gun():
 	var active_gun = weapon_manager.active_gun

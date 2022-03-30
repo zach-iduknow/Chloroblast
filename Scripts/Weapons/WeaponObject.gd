@@ -37,6 +37,7 @@ func _ready():
 	rng.randomize()
 	choose_cast()
 	#tells gun what ammo reserve to take from
+	#this resets each time a new weapon spawns
 	match(gun_type):
 		"pistol":
 			current_ammo = weapon_manager.curr_pistol
@@ -52,6 +53,17 @@ func _process(delta):
 	#used to control fire rate/type
 	if curr_time_btw_fire > 0:
 		curr_time_btw_fire -= 1
+
+func _physics_process(delta):
+	match(fire_type):
+		"semi":
+			if Input.is_action_just_pressed("shoot"): shoot()
+		"auto":
+			if Input.is_action_pressed("shoot"): shoot()
+		"semi_burst":
+			if Input.is_action_just_pressed("shoot"): shoot()
+		"auto_burst":
+			if Input.is_action_pressed("shoot"): shoot()
 
 #choose raycast pattern from player
 func choose_cast():
@@ -80,23 +92,22 @@ func shoot():
 		if !unlimited_ammo:
 			if current_ammo >= ammo_consumption:
 				current_ammo -= ammo_consumption
-				match(gun_type):
-					"pistol":
-						single_shot()
-					"shotgun":
-						cluster_shot()
-					"machine":
-						machine_shot()
+				bullet_pattern()
 				curr_time_btw_fire = time_btw_fire
 		else:
-			match(gun_type):
-					"pistol":
-						single_shot()
-					"shotgun":
-						cluster_shot()
-					"machine":
-						machine_shot()
+			bullet_pattern()
 			curr_time_btw_fire = time_btw_fire
+
+
+#choose firing type
+func bullet_pattern():
+	match(gun_type):
+		"pistol":
+			single_shot()
+		"shotgun":
+			cluster_shot()
+		"machine":
+			machine_shot()
 
 #this will shoot the ray out, used for guns like the pistol and railgun
 func single_shot():
@@ -104,13 +115,7 @@ func single_shot():
 		var target = weapon_cast.get_collider()
 		if target.is_in_group("enemy"):
 			target.take_damage(damage)
-			#applies damage based on the mutation
-			#mutation system will have to be redone if I do a bunch of different guns
-#			match active_mutation:
-#				"double":
-#					enemy.take_damage(damage * 2)
-#				_:
-#					enemy.take_damage(damage)
+#mutation system will have to be redone if I do a bunch of different guns
 
 #used for shotgun patterns
 func cluster_shot():
